@@ -1,0 +1,159 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package gestorhistoriasclinicas;
+
+/**
+ *
+ * @author sala103
+ */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+
+public class GestorMedicos {
+	
+	private final LinkedList<Medico> medicos =  new LinkedList<Medico>();
+	
+
+	public void gestionarMedicosMenu() throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            OUTER:
+            while (true) {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println("Gestionar Medicos");
+                System.out.println("1. Registrar Medicos");
+                System.out.println("2. Modificar Medicos");
+                System.out.println("3. Eliminar Medicos");
+                System.out.println("4. Mostrar Medicos");
+                System.out.println("5. Volver al Menu Principal");
+                System.out.print("Selecciona una opcion: ");
+                String opcionMedicos = reader.readLine();
+                switch (opcionMedicos) {
+                    case "1":
+                        this.nuevoMedico();
+                        break;
+                    case "2":
+                        this.modificarMedico();
+                        break;
+                    case "3":
+                        this.borrarMedico();
+                        break;
+                    case "4":
+                        this.mostrarMedicos();
+                        break;
+                    case "5":
+                        break OUTER;
+                    default:
+                        System.out.println("OpciÃƒÂ³n invÃƒÂ¡lida");
+                        break;
+                }
+            }
+	}
+
+	public boolean nuevoMedico() throws IOException {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("------Crear Nuevo Medico");
+		System.out.print("Identificador:");
+		String id = reader.readLine();
+		System.out.print("Nombres:");
+		String nombre = reader.readLine();
+		System.out.print("Apellidos:");
+		String apellidos = reader.readLine();
+		System.out.print("Epecialidad:");
+		String especialidad = reader.readLine();
+
+		Medico nuevoMedico = new Medico(id, nombre, apellidos, especialidad);
+		return medicos.add(nuevoMedico);
+	}
+	
+	
+	public void mostrarMedicos() {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		System.out.println("------Lista Medicos");
+
+		if (medicos.isEmpty()){
+			System.out.println("No hay Medicos registrados!");
+                }
+                        else {
+                    medicos.forEach((p) -> {
+                        p.mostrar();
+                    });
+		}
+	}
+	
+	
+	public boolean modificarMedico() throws IOException {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("------Modificar Medico");
+		System.out.print("Introduzca Identificador del medico a modificar:");
+		String id = reader.readLine();
+
+		
+		Medico medico = null;
+		for (int i = 0; i < medicos.size(); i++){
+			if (medicos.get(i).getId().equals(id)) {
+				medico = medicos.get(i);
+				break;
+			}
+		}
+		
+		if (medico == null) {
+			System.out.println("No se encuentra Medico con el ID:\n" + id);
+			return false;
+		}
+		else {
+			System.out.print("ID actual: " + medico.getId()
+					+ "\nIntroduzca nuevo identificador:");
+			medico.setId(reader.readLine());
+			System.out.print("Nombre actual: " + medico.getNombre()
+					+ "\nIntroduzca nuevo nombre:");
+			medico.setNombre(reader.readLine());
+			System.out.print("Apellidos actuales: " + medico.getApellidos()
+					+ "\nIntroduzca nuevos apellidos:");
+			medico.setApellidos(reader.readLine());
+			System.out.print("Especialidad actual: " + medico.getEspecialidad()
+					+ "\nIntroduzca especialidad:");
+			medico.setEspecialidad(reader.readLine());
+			return true;
+		}
+	}
+	
+	
+	public boolean borrarMedico() throws IOException {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("------Borrar Medico");
+		System.out.print("Introduzca Identificador del medico a borrar:");
+		String id = reader.readLine();
+		
+		Medico medico = null;
+		for (int i = 0; i < medicos.size(); i++){
+			if (medicos.get(i).getId().equals(id)) {
+				medico = medicos.get(i);
+				break;
+			}
+		}
+		
+		if (medico == null) {
+			System.out.println("No se encuentra Medicos con el ID:\n" + id);
+			return false;
+		}
+		else {
+			medicos.remove(medico);
+			System.out.println("Se elimino el Medicos con ID:\n" + id);
+			return true;
+		}
+	}
+
+}
