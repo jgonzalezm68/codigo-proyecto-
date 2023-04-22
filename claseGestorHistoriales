@@ -1,0 +1,170 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package gestorhistoriasclinicas;
+
+/**
+ *
+ * @author sala103
+ */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+
+
+public final class GestorHistoriales {
+
+	private final LinkedList<HistorialClinico> historialesClinicos =  new LinkedList<HistorialClinico>();
+
+
+	
+
+	public void gestionarHistorias() throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            OUTER:
+            while (true) {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println("Gestionar Historias");
+                System.out.println("1. Registrar Historias");
+                System.out.println("2. Modificar Historias");
+                System.out.println("3. Eliminar Historias");
+                System.out.println("4. Mostrar Historias");
+                System.out.println("5. Volver al Menu Principal");
+                System.out.print("Selecciona una opcion: ");
+                String opcionPacientes = reader.readLine();
+                switch (opcionPacientes) {
+                    case "1":
+                        this.nuevoHistorialClinico();
+                        break;
+                    case "2":
+                        this.modificarHistorialClinico();
+                        break;
+                    case "3":
+                        this.borrarHistorialClinico();
+                        break;
+                    case "4":
+                        this.mostrarhistorialesClinicos();
+                        break;
+                    case "5":
+                        break OUTER;
+                    default:
+                        System.out.println("OpciÃƒÆ’Ã‚Â³n invÃƒÆ’Ã‚Â¡lida");
+                        break;
+                }
+            }
+	}
+	
+
+	public boolean nuevoHistorialClinico() throws IOException {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("------Crear Nuevo Historial Clinico");
+		System.out.print("Codigo:");
+		String codigo = reader.readLine();
+		System.out.print("Fecha:");
+		String fecha = reader.readLine();
+		System.out.print("ID Paciente:");
+		String idPaciente = reader.readLine();
+		System.out.print("ID Medico:");
+		String idMedico = reader.readLine();
+                System.out.print("Observaciones:");
+		String observaciones = reader.readLine();
+		HistorialClinico nuevoHistorialClinico = new HistorialClinico(codigo, fecha, idPaciente, idMedico, observaciones);
+		return historialesClinicos.add(nuevoHistorialClinico);
+	}
+	
+	
+	public void mostrarhistorialesClinicos() {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		System.out.println("------Historiales Clinicos");
+
+		if (historialesClinicos.isEmpty()){
+			System.out.println("No hay historiales clinicos registrados!");
+                }
+                else {
+                    historialesClinicos.forEach((p) -> {
+                        p.mostrar();
+                    });
+		}
+	}
+	
+	
+	public boolean modificarHistorialClinico() throws IOException {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("------Modificar Historial Clinico");
+		System.out.print("Introduzca el codigo del historial clinico a modificar:");
+		String codigo = reader.readLine();
+
+		
+		HistorialClinico historialclinico = null;
+		for (int i = 0; i < historialesClinicos.size(); i++){
+			if (historialesClinicos.get(i).getCodigo().equals(codigo)) {
+				historialclinico = historialesClinicos.get(i);
+				break;
+			}
+		}
+		
+		if (historialclinico == null) {
+			System.out.println("No se encuentra el historial clinico con el codigo:\n" + codigo);
+			return false;
+		}
+		else {
+			System.out.print("Codigo actual: " + historialclinico.getCodigo()
+					+ "\nIntroduzca nuevo codigo:");
+			historialclinico.setCodigo(reader.readLine());
+			System.out.print("Fecha actual: " + historialclinico.getFecha()
+					+ "\nIntroduzca nueva fecha:");
+			historialclinico.setFecha(reader.readLine());
+			System.out.print("ID Paciente actual: " + historialclinico.getIdPaciente()
+					+ "\nIntroduzca nuevo ID:");
+			historialclinico.setIdPaciente(reader.readLine());
+			System.out.print("ID Medico actual: " + historialclinico.getIdMedico()
+					+ "\nIntroduzca nuevo ID:");
+			historialclinico.setIdMedico(reader.readLine());
+                        System.out.print("Observaciones actuales: " + historialclinico.getObservaciones()
+					+ "\nIntroduzca nuevas observaciones:");
+			historialclinico.setObservaciones(reader.readLine());
+			return true;
+		}
+	}
+	
+	
+	public boolean borrarHistorialClinico() throws IOException {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("------Borrar Historial Clinico");
+		System.out.print("Introduzca el Codigo del historial clinico a borrar:");
+		String codigo = reader.readLine();
+		
+		HistorialClinico historialclinico = null;
+		for (int i = 0; i < historialesClinicos.size(); i++){
+			if (historialesClinicos.get(i).getCodigo().equals(codigo)) {
+				historialclinico = historialesClinicos.get(i);
+				break;
+			}
+		}
+		
+		if (historialclinico == null) {
+			System.out.println("No se encuentra el historial con el codigo:\n" + codigo);
+			return false;
+		}
+		else {
+			historialesClinicos.remove(historialclinico);
+			System.out.println("Se elimino el historial clinico con el codigo:\n" + codigo);
+			return true;
+		}
+	}
+}
+
+   
+
+
