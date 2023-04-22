@@ -1,0 +1,171 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package gestorhistoriasclinicas;
+
+/**
+ *
+ * @author sala103
+ */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+
+
+public final class GestorPacientes {
+
+	private final LinkedList<Paciente> pacientes =  new LinkedList<Paciente>();
+	
+	
+
+	public void gestionarPacientes() throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            OUTER:
+            while (true) {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println("Gestionar Pacientes");
+                System.out.println("1. Registrar Pacientes");
+                System.out.println("2. Modificar Pacientes");
+                System.out.println("3. Eliminar Pacientes");
+                System.out.println("4. Mostrar Pacientes");
+                System.out.println("5. Volver al Menu Principal");
+                System.out.print("Selecciona una opcion: ");
+                String opcionPacientes = reader.readLine();
+                switch (opcionPacientes) {
+                    case "1":
+                        this.nuevoPaciente();
+                        break;
+                    case "2":
+                        this.modificarPaciente();
+                        break;
+                    case "3":
+                        this.borrarPaciente();
+                        break;
+                    case "4":
+                        this.mostrarPacientes();
+                        break;
+                    case "5":
+                        break OUTER;
+                    default:
+                        System.out.println("Opcion invalida");
+                        break;
+                }
+            }
+	}
+	
+
+	public boolean nuevoPaciente() throws IOException {
+                System.out.print("\033[H\033[2J");
+		System.out.flush();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("------Crear Nuevo Paciente");
+		System.out.print("Identificador:");
+		String id = reader.readLine();
+		System.out.print("Nombres:");
+		String nombre = reader.readLine();
+		System.out.print("Apellidos:");
+		String apellidos = reader.readLine();
+                System.out.print("Edad:");
+		String edad = reader.readLine();
+		System.out.print("Genero:");
+		String genero = reader.readLine();
+                
+
+		Paciente nuevoPaciente = new Paciente(id, nombre, apellidos, edad, genero);
+		return pacientes.add(nuevoPaciente);
+	}
+	
+	
+	public void mostrarPacientes() {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		System.out.println("------Lista Pacientes");
+
+		if (pacientes.isEmpty()){
+			System.out.println("No hay Pacientes registrados!");
+                }
+                else {
+                    pacientes.forEach((p) -> {
+                        p.mostrar();
+                    });
+		}
+	}
+	
+	
+	public boolean modificarPaciente() throws IOException {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("------Modificar Paciente");
+		System.out.print("Introduzca Identificador del paciente a modificar:");
+		String id = reader.readLine();
+
+		
+		Paciente paciente = null;
+		for (int i = 0; i < pacientes.size(); i++){
+			if (pacientes.get(i).getId().equals(id)) {
+				paciente = pacientes.get(i);
+				break;
+			}
+		}
+		
+		if (paciente == null) {
+			System.out.println("No se encuentra el paciente con el ID:\n" + id);
+			return false;
+		}
+		else {
+			System.out.print("ID actual: " + paciente.getId()
+					+ "\nIntroduzca nuevo identificador:");
+			paciente.setId(reader.readLine());
+			System.out.print("Nombre actual: " + paciente.getNombre()
+					+ "\nIntroduzca nuevo nombre:");
+			paciente.setNombre(reader.readLine());
+			System.out.print("Apellidos actuales: " + paciente.getApellidos()
+					+ "\nIntroduzca nuevos apellidos:");
+			paciente.setApellidos(reader.readLine());
+			System.out.print("Genero: " + paciente.getGenero()
+					+ "\nIntroduzca genero:");
+			paciente.setGenero(reader.readLine());
+                        System.out.print("Edad: " + paciente.getEdad()
+					+ "\nIntroduzca edad:");
+			paciente.setEdad(reader.readLine());
+                        
+			return true;
+		}
+	}
+	
+	
+	public boolean borrarPaciente() throws IOException {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("------Borrar Paciente");
+		System.out.print("Introduzca Identificador del paciente a borrar:");
+		String id = reader.readLine();
+		
+		Paciente paciente = null;
+		for (int i = 0; i < pacientes.size(); i++){
+			if (pacientes.get(i).getId().equals(id)) {
+				paciente = pacientes.get(i);
+				break;
+			}
+		}
+		
+		if (paciente == null) {
+			System.out.println("No se encuentra paciente con el ID:\n" + id);
+			return false;
+		}
+		else {
+			pacientes.remove(paciente);
+			System.out.println("Se elimino el paciente con ID:\n" + id);
+			return true;
+		}
+        }
+    }
+
+
+
