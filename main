@@ -1,0 +1,61 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package gestorhistoriasclinicas;
+
+/**
+ *
+ * @author sala103
+ */
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class GestorHistoriasClinicas {
+
+    public static void main(String[] args)  {
+        System.out.println("************************ SOFTWARE MANEJO DE HISTORIAS CLINICAS************************");
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            GestorMedicos gestorMedicos = new GestorMedicos();
+            GestorPacientes gestorPacientes = new GestorPacientes();
+            GestorHistoriales gestorHistoriales = new GestorHistoriales();
+            OUTER:
+            while (true) {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println("Menu Principal");
+                System.out.println("1. Gestionar Medicos");
+                System.out.println("2. Gestionar Pacientes");
+                System.out.println("3. Gestionar Historial Clinico");
+                System.out.println("4. Salir");
+                System.out.print("Selecciona una opcion: ");
+                String opcion = reader.readLine();
+                switch (opcion) {
+                    case "1":
+                        gestorMedicos.gestionarMedicosMenu();
+                        break;
+                    case "2":
+                        gestorPacientes.gestionarPacientes();
+                        break;
+                    case "3":
+                        gestorHistoriales.gestionarHistorias();
+                        break;
+                    case "4":
+                        System.out.println("Saliendo...");
+                        break OUTER;
+                    default:
+                        System.out.println("OpciÃƒÆ’Ã‚Â³n invÃƒÆ’Ã‚Â¡lida. Por favor, selecciona una opciÃƒÆ’Ã‚Â³n vÃƒÆ’Ã‚Â¡lida.");
+                        break;
+                }
+            }
+        }catch (Exception e){
+            System.out.println("Ocurrio un error en el programa!!!!");
+        }
+
+    }
+}
+
+
+
